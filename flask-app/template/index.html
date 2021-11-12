@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <!--<link rel="icon" href="">-->
+
+    <title>Novel COVID 2019 DASHBOARD - SPAIN</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='sticky-footer-navbar.css') }}" rel="stylesheet">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+		.card-horizontal {
+		display: flex;
+		flex: 1 1 auto;
+		}	
+		.header-f{
+			font-family: 'Zen Old Mincho', serif;
+			font-weight: bold;
+		}
+		.body-f{
+			font-family: 'Playfair Display', serif;
+		}
+		.body-fc{
+			font-family: 'Playfair Display', serif;
+			font-style: italic;
+			font-weight: lighter;
+		}
+	</style>
+  </head>
+
+  <body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#"><b>Novel COVID 2019 DASHBOARD - SPAIN</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Cases and vaccines<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('forecast') }}">Forecast</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('data') }}">Data</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="card my-2">
+						<div class="card-horizontal">
+							<div class="img-square-wrapper">
+								<img class="" src="{{ url_for('static', filename='assets/img/virus.png') }}" style = "margin-top:15px;" alt="Card image cap">
+							</div>
+							<div class="card-body">
+								<p class="card-title body-f">Total cases</p>
+								<h4 class="card-text header-f"><strong>{{ updated_stats["total_cases"] }}</strong> <span class="badge badge-secondary"> +{{cases_info["new_cases"]}}</span></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="card my-2">
+						<div class="card-horizontal">
+							<div class="img-square-wrapper">
+								<img class="" src="{{ url_for('static', filename='assets/img/heartbeat.png') }}" style = "margin-top:15px;" alt="Card image cap">
+							</div>
+							<div class="card-body">
+								<p class="card-title body-f">Total deaths</p>
+								<h4 class="card-text header-f"><strong>{{ updated_stats["total_deaths"] }}</strong></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="card my-2">
+						<div class="card-horizontal">
+							<div class="img-square-wrapper">
+								<img class="" src="{{ url_for('static', filename='assets/img/vaccine.png') }}" style = "margin-top:15px;" alt="Card image cap">
+							</div>
+							<div class="card-body">
+								<p class="card-title body-f">Total vaccines</p>
+								<h4 class="card-text header-f"><strong>{{ updated_stats["total_vaccines"] }}</strong></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-header m-2 header-f bg-white">
+						<h4>Spain COVID-19 Map</h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id='map' class = "card-plot-top-map"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						Map of accumulated incidents by autonomous communities of Spain in the last 14 days, for the entire population. The number are calculated from the individualized data reported to RENAVE.
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-header my-5 header-f bg-white">
+						<h4>Covid 19 in Spain <i>(in all country and by antonumous communities)</i></h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<div id='cases_all' class = "card-plot-top"></div>
+				</div>
+				<div class="col-md-3">
+					<div class="card border-0">
+						<div class="card-body">
+						  <h4 class="card-title header-f"> <strong>New Covid cases (Daily)</strong></h4>
+						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{cases_info["last_update"]}}</i></h6>
+						  <p class="card-text text-muted body-f">This graph represents the daily reported covid cases, the data source is Instituto de Salud Carlos III. Maybe some diffrences may noticed due to update time range.</p>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{cases_info["new_cases"]}}</span> New cases</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						The numbers are obtained from the declaration of COVID-19 cases to the National Epidemiological Surveillance Network (RENAVE) through the computer platform via the Web SiViES (Spanish Surveillance System)<br />
+						For a complete description of the data, visit the official website of the Institute of health Carlos III <a href = "https://cnecovid.isciii.es/">https://cnecovid.isciii.es/</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id='cases_ccaa' class = "card-plot-top"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id='cases_bar' class = "card-plot-top"></div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+					<div class="card-header my-5 header-f bg-white">
+						<h4>Recovered and intensive health care incidence (Daily)</h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<div id='hosp_all' class = "card-plot-top"></div>
+				</div>
+				<div class="col-md-3">
+					<div class="card border-0">
+						<div class="card-body">
+						  <h4 class="card-title header-f"> <strong>Hospitalisation in Spain (Daily)</strong></h4>
+						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{hosp_info["last_update"]}}</i></h6>
+						  <p class="card-text text-muted body-f">Recovered cases are defined as the number of persons with a confirmed COVID-19 diagnosis who are alive 30 days post-onset <i>(this may defer from a period to another)</i> or those who are negatively tested after quarantine/isolation period. </p>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{hosp_info["new_hosp"]}}</span> New recovered</h5>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{hosp_info["new_uci"]}}</span> Cases in intensive health care </h5>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						The numbers are obtained from the declaration of COVID-19 cases to the National Epidemiological Surveillance Network (RENAVE) through the computer platform via the Web SiViES (Spanish Surveillance System)<br />
+						For a complete description of the data, visit the official website of the Institute of health Carlos III <a href = "https://cnecovid.isciii.es/">https://cnecovid.isciii.es/</a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-header my-5 header-f bg-white">
+						<h4>Covid 19 mortality in Spain (in all the country and by antonumous communities)</i></h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<div id='deaths_all' class = "card-plot-top"></div>
+				</div>
+				<div class="col-md-3">
+					<div class="card border-0">
+						<div class="card-body">
+							<h4 class="card-title header-f"> <strong>New Covid deaths (Daily)</strong></h4>
+							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{deaths_info["last_update"]}}</i></h6>
+							<p class="card-text text-muted body-f">This graph represents the daily reported covid deaths, the data source is Instituto de Salud Carlos III. Maybe some diffrences may noticed due to update time range.</p>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{deaths_info["new_deaths"]}}</span> New deaths </h5>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id='deaths_ccaa' class = "card-plot-top"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						The numbers are obtained from the declaration of COVID-19 cases to the National Epidemiological Surveillance Network (RENAVE) through the computer platform via the Web SiViES (Spanish Surveillance System)<br />
+						For a complete description of the data, visit the official website of the Institute of health Carlos III <a href = "https://cnecovid.isciii.es/">https://cnecovid.isciii.es/</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col">
+					<div class="card-header my-5 header-f bg-white">
+						<h4>Vaccination in Spain (in all country and by antonumous communities)</i></h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<div id='vaccines_all' class = "card-plot-top"></div>
+				</div>
+				<div class="col-md-3">
+					<div class="card border-0">
+						<div class="card-body">
+							<h4 class="card-title header-f"> <strong>Cumulative numbers of the vaccination campaign in Spain </strong></h4>
+							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>Last update {{vaccines_info["last_update"]}}</i></h6>
+							<p class="card-text text-muted body-f">The data indicates the total number of vaccinated population in all spain and in each geographic area (autonomous communities). Since several doses are necessary for some vaccines, the number of people vaccinated can be different from other sources</p>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{vaccines_info["total_delivered"]}}</span> Total delivered vaccines.</h5>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{vaccines_info["percentage"]}}</span> Of the population is vaccinated in Spain.</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div id='vaccines_ccaa' class = "card-plot-top"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						The numbers are obtained from the official website of the Ministry of Health please check the link below to get more informations <br/> <a href = "https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov/vacunaCovid19.htm">https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov/vacunaCovid19.htm</a>
+					</div>
+				</div>
+			</div>
+		</div>
+    </main>
+
+    <footer class="footer position-absolute">
+		<div class="container text-center">
+			<span class="text-muted">INSEA - Institut national de statistique et d'économie appliquée - 2021 </span>
+		</div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="{{ url_for('static', filename='assets/js/vendor/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+	<script type='text/javascript'>
+		var graphs_cases_ccaa = {{graphJSON_cases_ccaa | safe}};
+		var graphs_cases_bar = {{graphJSON_cases_bar | safe}};
+		var graphs_cases_all = {{graphJSON_cases_all | safe}};
+		var graphs_vaccines_all = {{graphJSON_vaccines_all | safe}};
+		var graphs_vaccines_ccaa = {{graphJSON_vaccines_ccaa | safe}};
+		var graphs_deaths_ccaa = {{graphJSON_deaths_ccaa | safe}};
+		var graphs_deaths_all = {{graphJSON_deaths_all | safe}};
+		var graphs_hosp_all = {{graphJSON_hosp | safe}};
+		var graphs_map = {{map | safe}};
+
+		Plotly.plot('map',graphs_map["data"], graphs_map["layout"], {responsive : true});
+		Plotly.plot('cases_all',graphs_cases_all["data"], graphs_cases_all["layout"], {responsive : true});
+		Plotly.plot('cases_ccaa',graphs_cases_ccaa["data"], graphs_cases_ccaa["layout"], {responsive : true});
+		Plotly.plot('cases_bar',graphs_cases_bar["data"], graphs_cases_bar["layout"], {responsive : true});
+		Plotly.plot('deaths_all',graphs_deaths_all["data"], graphs_deaths_all["layout"], {responsive : true});
+		Plotly.plot('deaths_ccaa',graphs_deaths_ccaa["data"], graphs_deaths_ccaa["layout"], {responsive : true});
+		Plotly.plot('vaccines_all',graphs_vaccines_all["data"], graphs_vaccines_all["layout"], {responsive : true});
+		Plotly.plot('vaccines_ccaa',graphs_vaccines_ccaa["data"], graphs_vaccines_ccaa["layout"], {responsive : true});
+		Plotly.plot('hosp_all',graphs_hosp_all["data"], graphs_hosp_all["layout"], {responsive : true});
+		hosp_all
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  </body>
+</html>

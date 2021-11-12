@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <!--<link rel="icon" href="">-->
+
+    <title>Novel COVID 2019 DASHBOARD - SPAIN</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='sticky-footer-navbar.css') }}" rel="stylesheet">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+      .card-horizontal {
+      display: flex;
+      flex: 1 1 auto;
+      }	
+      .header-f{
+        font-family: 'Zen Old Mincho', serif;
+        font-weight: bold;
+      }
+      .body-f{
+        font-family: 'Playfair Display', serif;
+      }
+      .body-fc{
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-weight: lighter;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#"><b>Novel COVID 2019 DASHBOARD - SPAIN</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}">Cases and vaccines</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('forecast') }}">Forecast</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Data</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+      <div class="container h-100">
+        <div class="row align-items-center h-100">
+          <div class="col-8 mx-auto">
+            <div class="jumbotron" style="background:transparent !important">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active body-f" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">COVID-19 Data</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link body-f" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vaccines Data</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active body-f" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  <div class = "m-5">
+                    The numbers are obtained from the declaration of COVID-19 cases to the National Epidemiological Surveillance Network (RENAVE) through the computer platform via the Web SiViES (Spanish Surveillance System)<br />
+                    For a complete description of the data, visit the official website of the Institute of health Carlos III <a href = "https://cnecovid.isciii.es/">https://cnecovid.isciii.es/</a> <br />The link below contains the data used by the website in visualizations and forecasting.
+                    <a href="{{ url_for('.download_data_c') }}">download the file</a>
+                  </div>
+                </div>
+                <div class="tab-pane fade body-f" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class = "m-5">
+                    The numbers are obtained from the official website of the Ministry of Health please check the link below to get more informations <br/> <a href = "https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov/vacunaCovid19.htm">https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov/vacunaCovid19.htm</a>
+                    <br />We performed some transformations on data, for this reason the numbers, maybe differ from the source and our data. The link below gives all data used in vaccination campaign visualizations in the home page, <a href="{{ url_for('.download_data_v') }}">download the file </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="{{ url_for('static', filename='assets/js/vendor/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  </body>
+</html>

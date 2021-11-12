@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <!--<link rel="icon" href="">-->
+
+    <title>Novel COVID 2019 DASHBOARD - SPAIN</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='sticky-footer-navbar.css') }}" rel="stylesheet">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+		.card-horizontal {
+		display: flex;
+		flex: 1 1 auto;
+		}	
+		.header-f{
+			font-family: 'Zen Old Mincho', serif;
+			font-weight: bold;
+		}
+		.body-f{
+			font-family: 'Playfair Display', serif;
+		}
+		.body-fc{
+			font-family: 'Playfair Display', serif;
+			font-style: italic;
+			font-weight: lighter;
+		}
+	</style>
+  </head>
+
+  <body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#"><b>Novel COVID 2019 DASHBOARD - SPAIN</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}">Cases and vaccines</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Forecast<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('data') }}">Data</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <section class="min-vh-100 d-flex align-items-center justify-content-center py-3 my-5">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col">
+					<div class="card-header m-2 header-f bg-white">
+						<h4>COVID-19 Cases Forecast</h4>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-9">
+					<div id='forecast' class = "card-plot-top-map"></div>
+				</div>
+        <div class="col-md-3">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title body-f">Forecasting numbers</h5>
+              <p class="card-tex body-f">The forecasted new COVID-19 cases in Spain are represented in the graphic, the maximum time interval is <b>14 days</b><br /> <small class = "body-fc">{{last_date}}</small></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item body-f"><h5>New cases : <strong>{{forecast_info[0]}}</strong></h5></li>
+              <li class="list-group-item body-f"><h5>Max Forecast : <strong>{{forecast_info[1]}}</strong></h5></li>
+              <li class="list-group-item body-f"><h5>Min Forecast : <strong>{{forecast_info[2]}}</strong></h5></li>
+            </ul>
+          </div>
+        </div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card-footer text-muted body-fc">
+						The forecasted covid-19 values are obtained from a trained Prophet model. The following results maybe different to reality duo to incertainty and the model performance. We used the historical data for model training that you can find in 'Data' page.
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+    <footer class="footer position-absolute">
+      <div class="container text-center">
+        <span class="text-muted">INSEA - Institut national de statistique et d'économie appliquée - 2021 </span>
+      </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="{{ url_for('static', filename='assets/js/vendor/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+	<script type='text/javascript'>
+    var forecast = {{forecast_json | safe}};
+    Plotly.plot('forecast',forecast["data"], forecast["layout"], {responsive : true});
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  </body>
+</html>
