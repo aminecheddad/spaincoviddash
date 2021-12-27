@@ -74,7 +74,7 @@
 							</div>
 							<div class="card-body">
 								<p class="card-title body-f">Total cases</p>
-								<h4 class="card-text header-f"><strong>{{ updated_stats["total_cases"] }}</strong> <span class="badge badge-secondary"> +{{cases_info["new_cases"]}}</span></h4>
+								<h4 class="card-text header-f"><strong>{{ info["total_cases"] }}</strong> <span class="badge badge-secondary"> +{{info["new_cases"]}}</span></h4>
 							</div>
 						</div>
 					</div>
@@ -87,7 +87,7 @@
 							</div>
 							<div class="card-body">
 								<p class="card-title body-f">Total deaths</p>
-								<h4 class="card-text header-f"><strong>{{ updated_stats["total_deaths"] }}</strong></h4>
+								<h4 class="card-text header-f"><strong>{{ info["total_deaths"] }}</strong></h4>
 							</div>
 						</div>
 					</div>
@@ -100,7 +100,7 @@
 							</div>
 							<div class="card-body">
 								<p class="card-title body-f">Total vaccines</p>
-								<h4 class="card-text header-f"><strong>{{ updated_stats["total_vaccines"] }}</strong></h4>
+								<h4 class="card-text header-f"><strong>{{ info["total_vaccines"] }}</strong></h4>
 							</div>
 						</div>
 					</div>
@@ -140,9 +140,9 @@
 					<div class="card border-0">
 						<div class="card-body">
 						  <h4 class="card-title header-f"> <strong>New Covid cases (Daily)</strong></h4>
-						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{cases_info["last_update"]}}</i></h6>
+						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{info["data1_ld"]}}</i></h6>
 						  <p class="card-text text-muted body-f">This graph represents the daily reported covid cases, the data source is Instituto de Salud Carlos III. Maybe some diffrences may noticed due to update time range.</p>
-						  <h5 class = "body-f"><span class="badge badge-secondary">{{cases_info["new_cases"]}}</span> New cases</h5>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{info["new_cases"]}}</span> New cases</h5>
 						</div>
 					</div>
 				</div>
@@ -181,10 +181,10 @@
 					<div class="card border-0">
 						<div class="card-body">
 						  <h4 class="card-title header-f"> <strong>Hospitalisation in Spain (Daily)</strong></h4>
-						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{hosp_info["last_update"]}}</i></h6>
+						  <h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{info["data1_ld"]}}</i></h6>
 						  <p class="card-text text-muted body-f">Recovered cases are defined as the number of persons with a confirmed COVID-19 diagnosis who are alive 30 days post-onset <i>(this may defer from a period to another)</i> or those who are negatively tested after quarantine/isolation period. </p>
-						  <h5 class = "body-f"><span class="badge badge-secondary">{{hosp_info["new_hosp"]}}</span> New recovered</h5>
-						  <h5 class = "body-f"><span class="badge badge-secondary">{{hosp_info["new_uci"]}}</span> Cases in intensive health care </h5>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{info["new_hosp"]}}</span> New recovered</h5>
+						  <h5 class = "body-f"><span class="badge badge-secondary">{{info["new_uci"]}}</span> Cases in intensive health care </h5>
 						</div>
 					</div>
 				</div>
@@ -212,9 +212,9 @@
 					<div class="card border-0">
 						<div class="card-body">
 							<h4 class="card-title header-f"> <strong>New Covid deaths (Daily)</strong></h4>
-							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{deaths_info["last_update"]}}</i></h6>
+							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>last update {{info["data1_ld"]}}</i></h6>
 							<p class="card-text text-muted body-f">This graph represents the daily reported covid deaths, the data source is Instituto de Salud Carlos III. Maybe some diffrences may noticed due to update time range.</p>
-							<h5 class = "body-f"><span class="badge badge-secondary">{{deaths_info["new_deaths"]}}</span> New deaths </h5>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{info["new_deaths"]}}</span> New deaths </h5>
 						</div>
 					</div>
 				</div>
@@ -248,10 +248,10 @@
 					<div class="card border-0">
 						<div class="card-body">
 							<h4 class="card-title header-f"> <strong>Cumulative numbers of the vaccination campaign in Spain </strong></h4>
-							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>Last update {{vaccines_info["last_update"]}}</i></h6>
+							<h6 class="card-subtitle mb-2 text-muted body-fc"><i>Last update {{info["data2_ld"]}}</i></h6>
 							<p class="card-text text-muted body-f">The data indicates the total number of vaccinated population in all spain and in each geographic area (autonomous communities). Since several doses are necessary for some vaccines, the number of people vaccinated can be different from other sources</p>
-							<h5 class = "body-f"><span class="badge badge-secondary">{{vaccines_info["total_delivered"]}}</span> Total delivered vaccines.</h5>
-							<h5 class = "body-f"><span class="badge badge-secondary">{{vaccines_info["percentage"]}}</span> Of the population is vaccinated in Spain.</h5>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{info["total_delivered"]}}</span> Total delivered vaccines.</h5>
+							<h5 class = "body-f"><span class="badge badge-secondary">{{info["percentage"]}}</span> Of the population is vaccinated in Spain.</h5>
 						</div>
 					</div>
 				</div>
@@ -288,7 +288,7 @@
 		var graphs_vaccines_ccaa = {{graphJSON_vaccines_ccaa | safe}};
 		var graphs_deaths_ccaa = {{graphJSON_deaths_ccaa | safe}};
 		var graphs_deaths_all = {{graphJSON_deaths_all | safe}};
-		var graphs_hosp_all = {{graphJSON_hosp | safe}};
+		var graphs_hosp_all = {{graphJSON_other | safe}};
 		var graphs_map = {{map | safe}};
 
 		Plotly.plot('map',graphs_map["data"], graphs_map["layout"], {responsive : true});
@@ -300,7 +300,7 @@
 		Plotly.plot('vaccines_all',graphs_vaccines_all["data"], graphs_vaccines_all["layout"], {responsive : true});
 		Plotly.plot('vaccines_ccaa',graphs_vaccines_ccaa["data"], graphs_vaccines_ccaa["layout"], {responsive : true});
 		Plotly.plot('hosp_all',graphs_hosp_all["data"], graphs_hosp_all["layout"], {responsive : true});
-		hosp_all
+		
 	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
   </body>
